@@ -5991,8 +5991,8 @@ probe_libc(){
         add_${pfx}cppflags -U__STRICT_ANSI__ -D__USE_MINGW_ANSI_STDIO=1
         eval test \$${pfx_no_}cc_type = "gcc" &&
             add_${pfx}cppflags -D__printf__=__gnu_printf__
-        test_${pfx}cpp_condition windows.h "!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0600" &&
-            add_${pfx}cppflags -D_WIN32_WINNT=0x0600
+        test_${pfx}cpp_condition windows.h "!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0501" &&
+            add_${pfx}cppflags -D_WIN32_WINNT=0x0501
         add_${pfx}cppflags -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600
     elif test_${pfx}cpp_condition _mingw.h "defined __MINGW_VERSION"  ||
          test_${pfx}cpp_condition _mingw.h "defined __MINGW32_VERSION"; then
@@ -6001,10 +6001,10 @@ probe_libc(){
             (__MINGW32_MAJOR_VERSION == 3 && __MINGW32_MINOR_VERSION >= 15)" ||
             die "ERROR: MinGW32 runtime version must be >= 3.15."
         add_${pfx}cppflags -U__STRICT_ANSI__ -D__USE_MINGW_ANSI_STDIO=1
-        test_${pfx}cpp_condition _mingw.h "__MSVCRT_VERSION__ < 0x0700" &&
-            add_${pfx}cppflags -D__MSVCRT_VERSION__=0x0700
-        test_${pfx}cpp_condition windows.h "!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0600" &&
-            add_${pfx}cppflags -D_WIN32_WINNT=0x0600
+        test_${pfx}cpp_condition _mingw.h "__MSVCRT_VERSION__ < 0x0600" &&
+            add_${pfx}cppflags -D__MSVCRT_VERSION__=0x0600
+        test_${pfx}cpp_condition windows.h "!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0501" &&
+            add_${pfx}cppflags -D_WIN32_WINNT=0x0501
         eval test \$${pfx_no_}cc_type = "gcc" &&
             add_${pfx}cppflags -D__printf__=__gnu_printf__
         add_${pfx}cppflags -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600
@@ -6032,7 +6032,7 @@ probe_libc(){
         # found in the SDK headers by default. (Alternatively, we could force
         # _WIN32_WINNT to 0x0602 in that case.)
         test_${pfx}cpp_condition stdlib.h "defined(_WIN32_WINNT)" ||
-            { test_${pfx}cpp <<EOF && add_${pfx}cppflags -D_WIN32_WINNT=0x0600; }
+            { test_${pfx}cpp <<EOF && add_${pfx}cppflags -D_WIN32_WINNT=0x0501; }
 #ifdef WINAPI_FAMILY
 #include <winapifamily.h>
 #if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
@@ -6592,7 +6592,7 @@ check_headers direct.h
 check_headers dirent.h
 check_headers dxgidebug.h
 check_headers dxva.h
-check_headers dxva2api.h -D_WIN32_WINNT=0x0600
+check_headers dxva2api.h -D_WIN32_WINNT=0x0501
 check_headers io.h
 enabled libdrm &&
     check_headers linux/dma-buf.h
@@ -6693,7 +6693,7 @@ check_type "windows.h d3d11.h" "ID3D11VideoContext"
 check_type "windows.h d3d12.h" "ID3D12Device"
 check_type "windows.h d3d12video.h" "ID3D12VideoDecoder"
 check_type "windows.h" "DPI_AWARENESS_CONTEXT" -D_WIN32_WINNT=0x0A00
-check_type "d3d9.h dxva2api.h" DXVA2_ConfigPictureDecode -D_WIN32_WINNT=0x0602
+check_type "d3d9.h dxva2api.h" DXVA2_ConfigPictureDecode -D_WIN32_WINNT=0x0501
 check_func_headers mfapi.h MFCreateAlignedMemoryBuffer -lmfplat
 
 check_type "vdpau/vdpau.h" "VdpPictureInfoHEVC"
